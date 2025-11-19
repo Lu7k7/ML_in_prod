@@ -30,9 +30,9 @@ jobs:
     - name: Run Ruff Linting
       # Le workflow échoue si Ruff trouve des erreurs
       run: |
-        ruff check app
+        ruff check .
 
     - name: Run Pytest
       # Le workflow échoue si les tests échouent
       run: |
-        pytest
+        python -m pytest
