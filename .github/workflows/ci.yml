@@ -1,0 +1,38 @@
+# .github/workflows/ci.yml
+name: CI Checks on Pull Request
+
+on:
+  # Déclenche le workflow sur toute Pull Request ciblant la branche 'dev'
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Utilise un environnement standard Linux
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        # Installer les dépendances du projet
+        pip install -r requirements.txt
+        # Installer les outils de vérification (Ruff et Pytest)
+        pip install pytest ruff
+
+    - name: Run Ruff Linting
+      # Le workflow échoue si Ruff trouve des erreurs
+      run: |
+        ruff check app
+
+    - name: Run Pytest
+      # Le workflow échoue si les tests échouent
+      run: |
+        pytest
